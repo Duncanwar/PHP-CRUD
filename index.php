@@ -47,7 +47,14 @@ include 'action.php'
   <h3 class="text-center text-dark">
   ADVANCED PHP CRUD APP USING MYSQLI
   </h3>
+<hr>
+<?php if(isset($_SESSION['response'])){ ?>
+    <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <b><?= $_SESSION['response']; ?></b>
 
+</div>
+<?php } unset($_SESSION['response']); ?>
   <div class="row">
   <div class="col-md-4">
   <h3 class="text-center text-info">Add Record
@@ -68,7 +75,7 @@ include 'action.php'
   </div>
 
   <div class="form-group">
-  <input type="file" name="image" class="for">
+  <input type="file" name="image" class="custom-file">
   </div>
 
   <div class="form-group">
@@ -78,10 +85,10 @@ include 'action.php'
   </form>
 </div>
 <!-- table is placed here -->
-<div class="col-md-8">
+<div class="col-md-12">
 <h3 class="text-center text-info">
 Records in Database
-<table class="table  table-hover">
+<table class="table table-dark table-hover">
     <thead>
       <tr>
         <th>#</th>
@@ -89,7 +96,7 @@ Records in Database
         <th>Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Actions</th>
+        <th class="p-2">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -99,10 +106,10 @@ Records in Database
         <td>John</td>
         <td>Doe</td>
         <td>john@example.com</td>
-        <td>
-        <a href="#" class="badge badge-primary p-2"> Details</a>|
-        <a href="#" class="badge badge-danger p-2"> Delete</a>|
-        <a href="#" class="badge badge-success p-2"> Edit</a>
+        <td class="p-2">
+        <a href="#" class="badge badge-primary "> Details</a>
+        <a href="#" class="badge badge-danger "> Delete</a>
+        <a href="#" class="badge badge-success "> Edit</a>
         </td>
       </tr>
     </tbody>
