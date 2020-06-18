@@ -63,29 +63,42 @@ include 'action.php'
   <form action="action.php" method="post" enctype="multipart/form-data">
   
   <div class="form-group">
-  <input type="text" name="name" class="form-control" placeholder="Enter a name">
+  <input type="hidden" name="id" value="<?= $id; ?>">
+  <input type="text" name="name" value="<?= $name; ?>" class="form-control" placeholder="Enter a name">
   </div>
 
   <div class="form-group">
-  <input type="email" name="email" class="form-control" placeholder="Enter Email">
+  <input type="email" name="email" value="<?= $email; ?>" class="form-control" placeholder="Enter Email">
   </div>
 
   <div class="form-group">
-  <input type="tel" name="phone" class="form-control" placeholder="Enter a phone">
+  <input type="tel" name="phone" value="<?= $phone; ?>" class="form-control" placeholder="Enter a phone">
   </div>
 
   <div class="form-group">
+  <input type="hidden" name="oldimage" value="<?= $photo; ?>">
   <input type="file" name="image" class="custom-file">
+  <img src="<?= $photo; ?>" width="120" class="img-thumbnail">
   </div>
 
   <div class="form-group">
+  <?php if($update){?>
+    <input type="submit" name="update" class="btn btn-success btn-block" value="UPDATE RECORD">
+  <?php } else { ?>
   <input type="submit" name="add" class="btn btn-primary btn-block" value="ADD RECORD">
+  <?php } ?>
     </div>
 
   </form>
 </div>
 <!-- table is placed here -->
 <div class="col-md-12">
+<?php 
+$query= "select * from crud";
+$stmt=$conn->prepare($query);
+$stmt->execute();
+$result= $stmt->get_result(); 
+?>
 <h3 class="text-center text-info">
 Records in Database
 <table class="table table-dark table-hover">
@@ -100,18 +113,20 @@ Records in Database
       </tr>
     </thead>
     <tbody>
+    <?php while($row=$result->fetch_assoc()){ ?>
       <tr>
-      <td>1</td>
-      <td><img src="" alt=""></td>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
+      <td><?= $row['id']; ?></td>
+      <td><img src="<?= $row["photo"]; ?>" width="25" ></td>
+        <td><?= $row["name"]; ?></td>
+        <td><?= $row["email"]; ?></td>
+        <td><?= $row["phone"]; ?></td>
         <td class="p-2">
-        <a href="#" class="badge badge-primary "> Details</a>
-        <a href="#" class="badge badge-danger "> Delete</a>
-        <a href="#" class="badge badge-success "> Edit</a>
+        <a href="details.php?details=<?= $row['id'] ?>" class="badge badge-primary "> Details</a>
+        <a href="action.php?delete=<?= $row['id'] ?>" class="badge badge-danger "> Delete</a>
+        <a href="index.php?edit=<?= $row['id'] ?>" class="badge badge-success "> Edit</a>
         </td>
       </tr>
+    <?php } ?>
     </tbody>
   </table>
 </h3>
