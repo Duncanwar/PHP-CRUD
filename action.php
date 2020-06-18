@@ -7,7 +7,7 @@ include 'config.php';
         $email="";
         $phone="";
         $photo="";
-$update= true;
+        $update= false;
 
 if(isset($_POST['add'])){
     $name=$_POST['name'];
@@ -66,6 +66,47 @@ if(isset($_POST['add'])){
         $photo=$row['photo'];
 
         $update=true;
+    }
+    if(isset($_POST['update'])){
+        $id=$_POST['id'];
+        $name=$_POST['name'];
+        $email=$_POST['email'];
+        $phone=$_POST['phone'];
+        $photo=$_POST['photo'];
+        $oldimage=$_POST['oldimage'];
+
+        if(isset($_FILES['image']['name'])&&($_FILES["image"]["name"]!="")){
+            $newimage=$_FILES['image']['name'];
+            unlink($oldimage);
+            move_uploaded_file($_FILES['image']['tmp_name'],$newimage);
+        }
+        else{
+            $newimage=$oldimage;
+        }
+        $query= "update crud set name=?,email=?,phone=?,photo=? where id=?";
+        $stmt=$conn->prepare($query);
+        $stmt->bind_param("ssssi",$name,$email,$phone,$newimage,$id);
+        $stmt->execute();
+        $stmt->execute();
+
+        $_SESSION['response']="Update Successfully";
+        $_SESSION['res_type']="primary";
+        header('location:index.php');
+    }
+    if(isset($_GET['details'])){
+        $id=$_GET['details'];
+        $query="select * from crud where id=?";
+        $stmt= $conn->prepare($query);
+        $stmt->bind_param("i",$id);
+        $stmt->execute();
+        $result=$stmt->get_result();
+        $row=$result->fetch_assoc();
+
+        $vid=$row['id'];
+        $vname=$row['name'];
+        $vemail=$row['email'];
+        $vphone=$row['phone'];
+        $vphoto=$row['photo'];
     }
 
 ?>
