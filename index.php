@@ -88,7 +88,7 @@ include 'action.php'
 <!-- table is placed here -->
 <div class="col-md-12">
 <?php 
-$query= "select * from crud";
+$query= "select * from crud";https://materializecss.com/about.html
 $stmt=$conn->prepare($query);
 $stmt->execute();
 $result= $stmt->get_result(); 
